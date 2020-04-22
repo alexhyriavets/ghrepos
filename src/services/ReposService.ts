@@ -1,12 +1,6 @@
 import axios from 'axios';
 
-export const fetchRepos = async () => {
-  const { data } = await axios.get('https://api.github.com/user/repos');
-
-  return data;
-};
-
-export const searchRepos = async (searchOptions: any) => {
+export const fetchRepos = async (searchOptions: any) => {
   const {
     query,
     sort = 'updated',

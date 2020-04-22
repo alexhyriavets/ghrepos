@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-import { searchRepos } from '../services/ReposService';
+import InfiniteScroll from 'react-infinite-scroller';
+import { fetchRepos } from '../services/ReposService';
+import { ReposList } from '../components/ReposList';
+import { Repo } from '../components/Repo';
 
 const sortOptions = [
   {
@@ -19,13 +22,23 @@ export const Home = () => {
   const [sortBy, setSortBy] = useState<string>(sortOptions[0].value);
 
   async function doSearch() {
-    const { repos: reposResponse } = await searchRepos({
+    const { repos: reposResponse } = await fetchRepos({
       query: searchText,
       sort: sortBy
     });
 
     setRepos(reposResponse);
-  }  
+  }
+
+  async function loadMoreRepos(page: number) {
+    const { repos: newRepos } = await fetchRepos({
+      query: searchText,
+      sort: sortBy,
+      page
+    });
+
+    setRepos(prevRepos => [...prevRepos, ...newRepos]);
+  }
 
   return (
     <div className="container">
@@ -69,9 +82,23 @@ export const Home = () => {
             Search
           </button>
 
-          {repos.map(repo => (
-            <p key={repo.id}>{repo.name}</p>
-          ))}
+          <ReposList>
+            <InfiniteScroll
+              pageStart={1}
+              loadMore={loadMoreRepos}
+              hasMore
+              loader={<div className="loader" key={0}>Loading ...</div>}
+            >
+              {repos.map(repo => (
+                <Repo 
+                  key={repo.id}
+                  name={repo.name}
+                  description={repo.description}
+                />
+              ))}
+            </InfiniteScroll>
+          </ReposList>
+
         </div>
       </div>
     </div>
