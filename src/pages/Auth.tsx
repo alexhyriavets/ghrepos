@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import { useLocation, useHistory } from 'react-router-dom';
-import { getRequestAuthUrl, fetchAccessToken } from '../services/AuthService';
-import { LocalStorageService, LocalStorage } from '../services/LocalStorageService';
+import { connect } from 'react-redux';
+import { getRequestAuthUrl } from '../services/AuthService';
+import { getAccessToken } from '../redux/actions/auth';
 
-const localStorageService = new LocalStorageService(window.localStorage as LocalStorage);
-
-export const Auth = () => {
+const AuthLocal = ({ getAccessToken: getToken, authenticated }: any) => {
   const location = useLocation();
   const history = useHistory();
 
@@ -17,17 +15,15 @@ export const Auth = () => {
     if (!code) {
       return;
     }
-    
-    async function getAccessToken() {
-      const { accessToken } = await fetchAccessToken(code as string);
 
-      localStorageService.set('accessToken', accessToken);
-      axios.defaults.headers.common.Authorization = `token ${accessToken}`;
+    getToken(code);
+  }, [getToken, history, location]);
+
+  useEffect(() => {
+    if (authenticated) {
       history.push('/');
     }
-
-    getAccessToken();
-  }, [location, history]);
+  }, [history, authenticated]);
 
   return (
     <div className="container">
@@ -52,3 +48,13 @@ export const Auth = () => {
     </div>
   );
 };
+
+const mapDispatchToProps =  {
+  getAccessToken
+};
+
+const mapStateToProps = state => ({
+  authenticated: state.Auth.authenticated
+});
+
+export const Auth = connect(mapStateToProps, mapDispatchToProps)(AuthLocal);

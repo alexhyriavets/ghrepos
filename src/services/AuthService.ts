@@ -3,6 +3,14 @@ import axios from 'axios';
 const clientId = '6d14161f0e268ed7c239';
 const redirectUrl = 'http://localhost:3000/auth';
 
+export const setAuthorizationHeader = (accessToken: string | null) => {
+  if (accessToken) {
+    axios.defaults.headers.common.Authorization = `token ${accessToken}`;
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+  }
+};
+
 export const getRequestAuthUrl = () => {
   const base = 'https://github.com/login/oauth/authorize';
 

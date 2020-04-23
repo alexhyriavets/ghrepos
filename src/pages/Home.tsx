@@ -18,7 +18,7 @@ const sortOptions = [
 
 export const Home = () => {
   const [repos, setRepos] = useState<any>([]);
-  const [searchText, setSearchText] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>('a');
   const [sortBy, setSortBy] = useState<string>(sortOptions[0].value);
 
   async function doSearch() {
@@ -31,11 +31,13 @@ export const Home = () => {
   }
 
   async function loadMoreRepos(page: number) {
+    console.log('start fetch');
     const { repos: newRepos } = await fetchRepos({
       query: searchText,
       sort: sortBy,
       page
     });
+    console.log('end fetch');
 
     setRepos(prevRepos => [...prevRepos, ...newRepos]);
   }

@@ -11,13 +11,13 @@ class LocalStorageService {
     this.localStorage = localStorage;
   }
   
-  async get(key: string): Promise<unknown> {
+  get<T>(key: string): T {
     const item = this.localStorage.getItem(key);
   
     return JSON.parse(item);
   }
   
-  async set<T>(key: string, value: T): Promise<void> {
+  set<T>(key: string, value: T): void {
     const serializedValue = JSON.stringify(value);
   
     this.localStorage.setItem(key, serializedValue);

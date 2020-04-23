@@ -1,23 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer from './redux/rootReducer';
 import './index.css';
-
-import { Auth } from './pages/Auth';
-import { Home } from './pages/Home';
-
 import * as serviceWorker from './serviceWorker';
+import { LocalStorageService, LocalStorage } from './services/LocalStorageService';
+import rootSaga from './redux/sagas';
+import { setAuthenticated } from './redux/actions/auth';
+import { setAuthorizationHeader } from './services/AuthService';
+import { App } from './App';
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(rootReducer, composeWithDevTools(
+  applyMiddleware(sagaMiddleware)
+));
+
+sagaMiddleware.run(rootSaga);
+
+const localStorageService = new LocalStorageService(window.localStorage as LocalStorage);
+const accessToken = localStorageService.get<string | null>('accessToken');
+
+if (accessToken) {
+  store.dispatch(setAuthenticated(true));
+  setAuthorizationHeader(accessToken);
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" component={Home} exact />
-        <Route path="/auth" component={Auth} exact />
-      </Switch>
-    </BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
