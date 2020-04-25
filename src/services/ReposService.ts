@@ -4,7 +4,7 @@ export const fetchRepos = async (searchOptions: any) => {
   const {
     query,
     sort = 'updated',
-    order = 'asc',
+    order = 'desc',
     page = 1,
     perPage = 15
   } = searchOptions;

@@ -1,5 +1,9 @@
 import React from 'react';
 
-export const ReposList = ({ children }: any) => (
+type PropTypes = {
+  children: HTMLElement
+};
+
+export const ReposList: React.FC<PropTypes> = ({ children }) => (
   <div>{ children }</div>
 );

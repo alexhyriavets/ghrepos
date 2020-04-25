@@ -16,7 +16,7 @@ const sortOptions = [
   }
 ];
 
-const DEBOUNCE_TIMEOUT = 1000;
+const DEBOUNCE_TIMEOUT = 400;
 
 export const Home = () => {
   const [query, setQuery] = useState('a');
@@ -56,7 +56,6 @@ export const Home = () => {
       <div className="row">
         <div className="col s3">
           <div className="input-field">
-            Sort by:
             <select
               id="sortSelect"
               defaultValue={sortOptions[0].value}
@@ -80,9 +79,9 @@ export const Home = () => {
             <input 
               id="search"
               className="validate"
+              placeholder='Search'
               onChange={e => setQuery(e.target.value)}
             />
-            <label htmlFor="search">Search</label>
           </div>
 
           <ReposList>
@@ -93,6 +92,8 @@ export const Home = () => {
                   <Repo 
                     name={repo.name}
                     description={repo.description}
+                    starsCount={repo.stargazers_count}
+                    forksCount={repo.forksCount}
                   />
                 </div>            
               ) : (      
@@ -101,6 +102,8 @@ export const Home = () => {
                   <Repo 
                     name={repo.name}
                     description={repo.description}
+                    starsCount={repo.stargazers_count}
+                    forksCount={repo.forks_count}
                   />
                 </div>   
               ))}

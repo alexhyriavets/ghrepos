@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getRequestAuthUrl } from '../services/AuthService';
 import { getAccessToken } from '../redux/actions/auth';
 
-const AuthLocal = ({ getAccessToken: getToken, authenticated }: any) => {
+export const Auth = () => {
+  const authenticated = useSelector(state => state.Auth.authenticated);
+  const dispatch = useDispatch();
+  
   const location = useLocation();
   const history = useHistory();
 
@@ -16,8 +19,8 @@ const AuthLocal = ({ getAccessToken: getToken, authenticated }: any) => {
       return;
     }
 
-    getToken(code);
-  }, [getToken, history, location]);
+    dispatch(getAccessToken(code));
+  }, [history, location, dispatch]);
 
   useEffect(() => {
     if (authenticated) {
@@ -48,13 +51,3 @@ const AuthLocal = ({ getAccessToken: getToken, authenticated }: any) => {
     </div>
   );
 };
-
-const mapDispatchToProps =  {
-  getAccessToken
-};
-
-const mapStateToProps = state => ({
-  authenticated: state.Auth.authenticated
-});
-
-export const Auth = connect(mapStateToProps, mapDispatchToProps)(AuthLocal);
