@@ -5,10 +5,11 @@ type PropTypes = {
   description: string
   forksCount?: number
   starsCount?: number
+  onClick?: () => void
 };
 
-export const Repo: React.FC<PropTypes> = ({ name, description, forksCount, starsCount }) => (
-  <div className="card">
+export const Repo: React.FC<PropTypes> = ({ name, description, forksCount, starsCount, onClick }) => (
+  <button type='button' className="card repoCard" onClick={onClick}>
     <div className="card-content">
       <span className="card-title">{ name }</span>
       <p>{ description }</p>
@@ -24,5 +25,5 @@ export const Repo: React.FC<PropTypes> = ({ name, description, forksCount, stars
         {starsCount || 0}
       </div>
     </div>
-  </div>
+  </button>
 );

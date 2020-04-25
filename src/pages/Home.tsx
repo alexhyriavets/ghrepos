@@ -4,6 +4,7 @@ import { ReposList } from '../components/ReposList';
 import { Repo } from '../components/Repo';
 import { useReposSearch } from './useReposSearch';
 import { useDebounce } from '../hooks/useDebounce';
+import { RepoModal } from '../components/RepoModal';
 
 const sortOptions = [
   {
@@ -22,6 +23,8 @@ export const Home = () => {
   const [query, setQuery] = useState('a');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [page, setPage] = useState(1);
+
+  const [openedRepoUrl, setOpenedRepoUrl] = useState('');
 
   const debouncedQuery = useDebounce(query, DEBOUNCE_TIMEOUT);
   
@@ -51,8 +54,16 @@ export const Home = () => {
     }
   }, [loading, hasMore]);
 
+  function repoModalCloseHandler() {
+    setOpenedRepoUrl('');
+  }
+
+  function openRepoModal(url: string) {
+    setOpenedRepoUrl(url);
+  }
+
   return (
-    <div className="container">
+    <div className="container home">
       <div className="row">
         <div className="col s3">
           <div className="input-field">
@@ -94,6 +105,7 @@ export const Home = () => {
                     description={repo.description}
                     starsCount={repo.stargazers_count}
                     forksCount={repo.forksCount}
+                    onClick={() => openRepoModal(repo.html_url)}
                   />
                 </div>            
               ) : (      
@@ -104,6 +116,7 @@ export const Home = () => {
                     description={repo.description}
                     starsCount={repo.stargazers_count}
                     forksCount={repo.forks_count}
+                    onClick={() => openRepoModal(repo.html_url)}
                   />
                 </div>   
               ))}
@@ -112,6 +125,9 @@ export const Home = () => {
           <div>{error && 'Error'}</div>
         </div>
       </div>
+
+
+      {openedRepoUrl && <RepoModal url={openedRepoUrl} onClose={repoModalCloseHandler} />}
     </div>
   );
 };
