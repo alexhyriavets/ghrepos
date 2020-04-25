@@ -20,6 +20,7 @@ export const fetchRepos = async (searchOptions: any) => {
   });
 
   return {
-    repos: data.items
+    repos: data.items,
+    hasMore: data.incomplete_results
   };
 };

@@ -8,8 +8,8 @@ const localStorageService = new LocalStorageService(window.localStorage as Local
 function* fetchAccessTokenWorker({ payload: code }) {
   const { accessToken } = yield call(fetchAccessToken, code);
 
-  yield setAuthorizationHeader(accessToken);
-  yield localStorageService.set('accessToken', accessToken);
+  setAuthorizationHeader(accessToken);
+  localStorageService.set('accessToken', accessToken);
 
   // @ts-ignore
   yield put({ type: SET_AUTHENTICATED, payload: true });
