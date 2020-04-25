@@ -1,15 +1,13 @@
 import { all, takeEvery, call, put } from 'redux-saga/effects';
 import { GET_ACCESS_TOKEN, SET_AUTHENTICATED } from './types';
 import { fetchAccessToken, setAuthorizationHeader } from '../services/AuthService';
-import { LocalStorageService, LocalStorage } from '../services/LocalStorageService';
-
-const localStorageService = new LocalStorageService(window.localStorage as LocalStorage);
+import { LocalStorageService } from '../services/StorageService';
 
 function* fetchAccessTokenWorker({ payload: code }) {
   const { accessToken } = yield call(fetchAccessToken, code);
 
   setAuthorizationHeader(accessToken);
-  localStorageService.set('accessToken', accessToken);
+  LocalStorageService.set('accessToken', accessToken);
 
   // @ts-ignore
   yield put({ type: SET_AUTHENTICATED, payload: true });

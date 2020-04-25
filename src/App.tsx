@@ -1,11 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Auth } from './pages/Auth';
 import { Home } from './pages/Home';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
-const AppLocal = ({ authenticated }: any) => {
+export const App = () => {
+  const authenticated = useSelector(state => state.Auth.authenticated);
+
   return (
     <div className="app">
       <Router>
@@ -24,9 +26,3 @@ const AppLocal = ({ authenticated }: any) => {
     </div>
   );
 };
-
-const mapStateToProps = state => ({
-  authenticated: state.Auth.authenticated
-});
-
-export const App = connect(mapStateToProps, null)(AppLocal);
