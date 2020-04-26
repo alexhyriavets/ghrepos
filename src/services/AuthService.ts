@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const clientId = '6d14161f0e268ed7c239';
 const redirectUrl = 'https://ghrepos-app.herokuapp.com/auth';
+const CLIENT_ID = process.env.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
 
 export const setAuthorizationHeader = (accessToken: string | null) => {
   if (accessToken) {
@@ -14,11 +15,15 @@ export const setAuthorizationHeader = (accessToken: string | null) => {
 export const getRequestAuthUrl = () => {
   const base = 'https://github.com/login/oauth/authorize';
 
-  return `${base}/?client_id=${clientId}&redirect_uri=${redirectUrl}`;
+  return `${base}/?client_id=${CLIENT_ID}&redirect_uri=${redirectUrl}`;
 };
 
 export const fetchAccessToken = async (code: string) => {
-  const { data } = await axios.get(`http://localhost:8080/access_token/?code=${code}`);
+  const { data } = await axios.post('https://github.com/login/oauth/access_token', {
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    code,
+  })
 
   return {
     accessToken: data.access_token as string
