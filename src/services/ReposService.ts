@@ -1,6 +1,15 @@
 import axios from 'axios';
+import { Repo } from '../types';
 
-export const fetchRepos = async (searchOptions: any) => {
+export type FetchReposParams = {
+  query: string
+  sort: string
+  order?: string
+  page?: number
+  perPage?: number
+};
+
+export const fetchRepos = async (searchOptions: FetchReposParams) => {
   const {
     query,
     sort = 'updated',
@@ -20,7 +29,7 @@ export const fetchRepos = async (searchOptions: any) => {
   });
 
   return {
-    repos: data.items,
-    hasMore: data.incomplete_results
+    repos: data.items as Repo[],
+    hasMore: data.incomplete_results as boolean
   };
 };

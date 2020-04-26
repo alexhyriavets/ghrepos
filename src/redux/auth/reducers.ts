@@ -1,10 +1,10 @@
-import { SET_AUTHENTICATED } from './types';
+import { SET_AUTHENTICATED, AuthState, AuthActionTypes } from './types';
 
-const initialState = {
+const initialState: AuthState = {
   authenticated: false
 };
 
-export const Auth = (state = initialState, action: any = {}) => {
+export const auth = (state = initialState, action: AuthActionTypes) => {
   switch (action.type) {
     case SET_AUTHENTICATED:
       return ({

@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 
 import { fetchRepos } from '../services/ReposService';
+import { Repo } from '../types';
 
-export const useReposSearch = ({ query, sort, page }) => {
+type ParamsType = {
+  query: string
+  sort: string
+  page: number
+};
+
+export const useReposSearch = ({ query, sort, page }: ParamsType) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [repos, setRepos] = useState<any>([]);
+  const [repos, setRepos] = useState<Repo[]>([]);
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
@@ -13,8 +20,15 @@ export const useReposSearch = ({ query, sort, page }) => {
   }, [query]);
 
   useEffect(() => {
+    if (!query) {
+      setLoading(false);
+
+      return;
+    }
+    
     setLoading(true);
     setError(false);
+
 
     fetchRepos({ query, page, sort })
       .then(({ repos: newRepos, hasMore: newHasMore }) => {
@@ -27,7 +41,6 @@ export const useReposSearch = ({ query, sort, page }) => {
       .finally(() => {
         setLoading(false);
       });
-
   }, [query, page, sort]);
 
   return { loading, error, repos, hasMore };

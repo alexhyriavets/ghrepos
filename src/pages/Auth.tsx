@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getRequestAuthUrl } from '../services/AuthService';
-import { getAccessToken } from '../redux/actions/auth';
+import { getAccessToken } from '../redux/auth/actions';
+import { RootState } from '../redux/rootReducer';
 
 export const Auth = () => {
-  const authenticated = useSelector(state => state.Auth.authenticated);
+  const authenticated = useSelector((state: RootState) => state.auth.authenticated);
   const dispatch = useDispatch();
 
   const location = useLocation();

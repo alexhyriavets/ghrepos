@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useRef, useCallback } from 'react';
-import { ReposList } from '../components/ReposList';
-import { Repo } from '../components/Repo';
-import { useReposSearch } from './useReposSearch';
+import { ReposList } from '../components/Repos/ReposList';
+import { Repo } from '../components/Repos/Repo';
+import { useReposSearch } from '../hooks/useReposSearch';
 import { useDebounce } from '../hooks/useDebounce';
-import { RepoModal } from '../components/RepoModal';
+import { RepoModal } from '../components/Repos/RepoModal';
 
 const sortOptions = [
   {
@@ -20,7 +20,7 @@ const sortOptions = [
 const DEBOUNCE_TIMEOUT = 400;
 
 export const Home = () => {
-  const [query, setQuery] = useState('a');
+  const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [page, setPage] = useState(1);
 
@@ -104,7 +104,7 @@ export const Home = () => {
                     name={repo.name}
                     description={repo.description}
                     starsCount={repo.stargazers_count}
-                    forksCount={repo.forksCount}
+                    forksCount={repo.forks_count}
                     onClick={() => openRepoModal(repo.html_url)}
                   />
                 </div>            

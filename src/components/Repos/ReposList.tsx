@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactNodeArray } from 'react';
 
 type PropTypes = {
-  children: HTMLElement
+  children: ReactNodeArray
 };
 
 export const ReposList: React.FC<PropTypes> = ({ children }) => (

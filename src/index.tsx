@@ -4,14 +4,14 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-import rootReducer from './redux/rootReducer';
+import { rootReducer } from './redux/rootReducer';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { LocalStorageService } from './services/StorageService';
-import rootSaga from './redux/sagas';
-import { setAuthenticated } from './redux/actions/auth';
+import rootSaga from './redux/rootSaga';
 import { setAuthorizationHeader } from './services/AuthService';
 import { App } from './App';
+import { setAuthenticated } from './redux/auth/actions';
 
 const sagaMiddleware = createSagaMiddleware();
 
