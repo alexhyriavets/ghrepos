@@ -19,7 +19,7 @@ export const getRequestAuthUrl = () => {
 };
 
 export const fetchAccessToken = async (code: string) => {
-  const { data } = await axios.post('https://github.com/login/oauth/access_token', {
+   const { data } = await axios.post('https://github.com/login/oauth/access_token', {
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
     code,
