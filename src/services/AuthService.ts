@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const clientId = '6d14161f0e268ed7c239';
-const redirectUrl = '/auth';
+const redirectUrl = 'https://ghrepos-app.herokuapp.com/auth';
 
 export const setAuthorizationHeader = (accessToken: string | null) => {
   if (accessToken) {
