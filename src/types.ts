@@ -7,3 +7,8 @@ export type Repo = {
   forks_count?: number
   stargazers_count?: number
 };
+
+export type SortOption = {
+  name: string,
+  value: string
+};

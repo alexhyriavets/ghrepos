@@ -10,25 +10,40 @@ type ParamsType = {
 };
 
 export const useReposSearch = ({ query, sort, page }: ParamsType) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [repos, setRepos] = useState<Repo[]>([]);
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
-    setRepos([]);
-  }, [query]);
-
-  useEffect(() => {
     if (!query) {
-      setLoading(false);
-
       return;
     }
-    
+
     setLoading(true);
     setError(false);
 
+    fetchRepos({ query, page, sort })
+      .then(({ repos: newRepos, hasMore: newHasMore }) => {
+        setRepos(newRepos);
+        setHasMore(newHasMore);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, sort]);
+
+  useEffect(() => {
+    if (!query) {
+      return;
+    }
+
+    setLoading(true);
+    setError(false);
 
     fetchRepos({ query, page, sort })
       .then(({ repos: newRepos, hasMore: newHasMore }) => {
@@ -41,7 +56,13 @@ export const useReposSearch = ({ query, sort, page }: ParamsType) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [query, page, sort]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  useEffect(() => {
+    setRepos([]);
+  }, [query]);
+
 
   return { loading, error, repos, hasMore };
-}; 
+};

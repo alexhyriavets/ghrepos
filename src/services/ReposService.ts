@@ -12,7 +12,7 @@ export type FetchReposParams = {
 export const fetchRepos = async (searchOptions: FetchReposParams) => {
   const {
     query,
-    sort = 'updated',
+    sort = 'stars',
     order = 'desc',
     page = 1,
     perPage = 15

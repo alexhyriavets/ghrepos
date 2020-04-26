@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const clientId = '6d14161f0e268ed7c239';
-const redirectUrl = 'http://localhost:3000/auth';
-
-
+const redirectUrl = '/auth';
 
 export const setAuthorizationHeader = (accessToken: string | null) => {
   if (accessToken) {

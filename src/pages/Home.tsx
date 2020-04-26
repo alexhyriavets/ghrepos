@@ -5,8 +5,10 @@ import { Repo } from '../components/Repos/Repo';
 import { useReposSearch } from '../hooks/useReposSearch';
 import { useDebounce } from '../hooks/useDebounce';
 import { RepoModal } from '../components/Repos/RepoModal';
+import { SortSelect } from '../components/Repos/SortSelect';
+import { SortOption } from '../types';
 
-const sortOptions = [
+const sortOptions: SortOption[] = [
   {
     name: 'Stars',
     value: 'stars'
@@ -22,7 +24,7 @@ const DEBOUNCE_TIMEOUT = 400;
 export const Home = () => {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
 
   const [openedRepoUrl, setOpenedRepoUrl] = useState('');
 
@@ -45,7 +47,7 @@ export const Home = () => {
 
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        setPage(prevPage=> prevPage + 1);
+        setPage(prevPage => prevPage + 1);
       }
     });
 
@@ -62,27 +64,16 @@ export const Home = () => {
     setOpenedRepoUrl(url);
   }
 
+  function handleSearchChange(event) {
+    setQuery(event.target.value);
+    setPage(1);
+  }
+
   return (
     <div className="container home">
       <div className="row">
         <div className="col s3">
-          <div className="input-field">
-            <select
-              id="sortSelect"
-              defaultValue={sortOptions[0].value}
-              className="browser-default"
-              onChange={e => setSort(e.target.value)}
-            >
-              {sortOptions.map(sortOption => (
-                <option
-                  key={sortOption.value}
-                  value={sortOption.value}
-                >
-                  {sortOption.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SortSelect options={sortOptions} onChange={setSort} />
         </div>
 
         <div className="col s10 offset-s1">
@@ -91,7 +82,7 @@ export const Home = () => {
               id="search"
               className="validate"
               placeholder='Search'
-              onChange={e => setQuery(e.target.value)}
+              onChange={handleSearchChange}
             />
           </div>
 

@@ -12,6 +12,7 @@ import rootSaga from './redux/rootSaga';
 import { setAuthorizationHeader } from './services/AuthService';
 import { App } from './App';
 import { setAuthenticated } from './redux/auth/actions';
+import { ACCESS_TOKEN_STORAGE_KEY } from './consts';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -21,7 +22,7 @@ const store = createStore(rootReducer, composeWithDevTools(
 
 sagaMiddleware.run(rootSaga);
 
-const accessToken = LocalStorageService.get<string | null>('accessToken');
+const accessToken = LocalStorageService.get<string | null>(ACCESS_TOKEN_STORAGE_KEY);
 if (accessToken) {
   store.dispatch(setAuthenticated(true));
   setAuthorizationHeader(accessToken);
