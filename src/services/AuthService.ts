@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const redirectUrl = 'https://ghrepos-app.herokuapp.com/auth';
-const CLIENT_ID = process.env.CLIENT_ID
-const CLIENT_SECRET = process.env.CLIENT_SECRET
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
+const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET
 
 export const setAuthorizationHeader = (accessToken: string | null) => {
   if (accessToken) {
