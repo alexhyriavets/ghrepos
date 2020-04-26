@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const redirectUrl = 'https://ghrepos-app.herokuapp.com/auth';
+const REDIRECT_URL = process.env.REACT_APP_REDIRECT_URL
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
-const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET
+// const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET
+const NODE_API_URL = process.env.REACT_APP_NODE_API_URL || ``
 
 export const setAuthorizationHeader = (accessToken: string | null) => {
   if (accessToken) {
@@ -15,14 +16,19 @@ export const setAuthorizationHeader = (accessToken: string | null) => {
 export const getRequestAuthUrl = () => {
   const base = 'https://github.com/login/oauth/authorize';
 
-  return `${base}/?client_id=${CLIENT_ID}&redirect_uri=${redirectUrl}`;
+  return `${base}/?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}`;
 };
 
 export const fetchAccessToken = async (code: string) => {
-   const { data } = await axios.post('https://github.com/login/oauth/access_token', {
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-    code,
+  //  const { data } = await axios.post('https://github.com/login/oauth/access_token', {
+  //   client_id: CLIENT_ID,
+  //   client_secret: CLIENT_SECRET,
+  //   code,
+  // })
+  const { data } = await axios.get(`${NODE_API_URL}access_token`, {
+    params: {
+      code
+    }
   })
 
   return {
